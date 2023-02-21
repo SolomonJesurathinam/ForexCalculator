@@ -45,7 +45,6 @@ text_lot.config(state=DISABLED)
 Label(master,text="Amount").grid(row=2,column=2)
 text_amount = Text(master,height=1,width=20)
 text_amount.grid(row=3,column=2)
-text_amount.config(state=DISABLED)
 
 
 def print_content():
@@ -53,10 +52,8 @@ def print_content():
     risk_value = float(risk.get())
     pip_value = float(pip.get())
 
-    text_amount.config(state=NORMAL)
     text_amount.delete("1.0",END)
     text_amount.insert(END,(account_bal*risk_value)/100)
-    text_amount.config(state=DISABLED)
 
     text_lot.config(state=NORMAL)
     Lot_value = ((((account_bal*risk_value)/100)/0.0001)/pip_value)/100000
@@ -67,5 +64,26 @@ def print_content():
 
 b1 = Button(master, text="Calculate", command=print_content)
 b1.grid(row=4, column=1)
+
+def calculate_risk():
+    account_bal = float(ac_balance.get())
+    amount1 = float(text_amount.get(1.0,END))
+
+    risk_value = (amount1*100)/account_bal
+    risk.set(risk_value)
+
+    risk_value = float(risk.get())
+    pip_value = float(pip.get())
+
+    text_lot.config(state=NORMAL)
+    Lot_value = ((((account_bal * risk_value) / 100) / 0.0001) / pip_value) / 100000
+    text_lot.delete("1.0", END)
+    text_lot.insert(END, Lot_value)
+    text_lot.config(state=DISABLED)
+
+
+
+b2 = Button(master, text="Amt Calc",command=calculate_risk)
+b2.grid(row=4,column=2)
 
 master.mainloop()
